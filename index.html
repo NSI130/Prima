@@ -4,22 +4,22 @@
   <meta charset="UTF-8" />
   <title>Ucapan Kelulusan Prima</title>
   <style>
-    body { font-family: Arial; max-width: 600px; margin: auto; padding: 20px; }
-    input, textarea { width: 100%; margin: 10px 0; padding: 8px; }
+    body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; }
+    input, textarea { width: 100%; margin: 10px 0; padding: 8px; box-sizing: border-box; }
     button { padding: 10px 15px; background: teal; color: white; border: none; cursor: pointer; }
+    button:hover { background: #006666; }
     .ucapan { background: #f1f1f1; padding: 10px; margin-top: 10px; border-left: 4px solid teal; }
   </style>
 </head>
 <body>
   <h1>Ucapan Kelulusan</h1>
   <input type="text" id="nameInput" placeholder="Nama kamu" />
-  <textarea id="messageInput" placeholder="Ucapan kamu..."></textarea>
-  <button onclick="tambahUcapan()">Kirim Ucapan</button>
+  <textarea id="messageInput" placeholder="Ucapan kamu..." rows="4"></textarea>
+  <button id="btnKirim">Kirim Ucapan</button>
 
   <h2>Ucapan yang Masuk:</h2>
   <div id="daftarUcapan"></div>
 
-  <!-- Firebase SDK v9+ Modular -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
     import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
@@ -70,6 +70,8 @@
         }
       });
     }
+
+    document.getElementById("btnKirim").addEventListener("click", tambahUcapan);
 
     tampilkanUcapan();
   </script>
