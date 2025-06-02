@@ -9,15 +9,26 @@
     button { padding: 10px 15px; background: teal; color: white; border: none; cursor: pointer; }
     button:hover { background: #006666; }
     .ucapan { background: #f1f1f1; padding: 10px; margin-top: 10px; border-left: 4px solid teal; }
+    #inputUcapan { display: none; }
   </style>
 </head>
 <body>
   <h1>Ucapan Kelulusan</h1>
-  <input type="text" id="nameInput" placeholder="Nama kamu" />
-  <textarea id="messageInput" placeholder="Ucapan kamu..." rows="4"></textarea>
-  <button id="btnKirim">Kirim Ucapan</button>
 
-  <h2>Ucapan yang Masuk:</h2>
+  <!-- Input nama untuk login/lihat ucapan -->
+  <div id="inputNama">
+    <input type="text" id="namaUser" placeholder="Masukkan nama kamu untuk lihat dan kirim ucapan" />
+    <button id="btnMasuk">Masuk</button>
+  </div>
+
+  <!-- Form tambah ucapan, baru muncul setelah nama dimasukkan -->
+  <div id="inputUcapan">
+    <h2>Halo, <span id="tampilNama"></span>! Kirim ucapanmu di bawah ini:</h2>
+    <textarea id="pesanUser" placeholder="Tulis ucapanmu..." rows="4"></textarea>
+    <button id="btnKirim">Kirim Ucapan</button>
+  </div>
+
+  <h2>Ucapan untuk kamu:</h2>
   <div id="daftarUcapan"></div>
 
   <script type="module">
@@ -38,42 +49,77 @@
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
-    function tambahUcapan() {
-      const nama = document.getElementById("nameInput").value.trim();
-      const pesan = document.getElementById("messageInput").value.trim();
-      if (!nama || !pesan) {
-        alert("Isi nama dan ucapan dulu yaa!");
-        return;
-      }
+    let namaSekarang = "";
 
-      const ucapanRef = ref(database, "ucapan");
-      push(ucapanRef, { nama, pesan });
+    const inputNamaDiv = document.getElementById("inputNama");
+    const inputUcapanDiv = document.getElementById("inputUcapan");
+    const tampilNamaSpan = document.getElementById("tampilNama");
+    const daftarUcapanDiv = document.getElementById("daftarUcapan");
 
-      document.getElementById("nameInput").value = "";
-      document.getElementById("messageInput").value = "";
-    }
-
+    // Fungsi tampilkan ucapan sesuai nama (case insensitive)
     function tampilkanUcapan() {
       const ucapanRef = ref(database, "ucapan");
       onValue(ucapanRef, (snapshot) => {
         const data = snapshot.val();
-        const container = document.getElementById("daftarUcapan");
-        container.innerHTML = "";
+        daftarUcapanDiv.innerHTML = "";
 
         if (data) {
-          Object.values(data).reverse().forEach(({ nama, pesan }) => {
+          // Filter dan tampilkan yang nama-nya sesuai input, case insensitive
+          const filtered = Object.values(data).filter(({ nama }) => {
+            return nama.toLowerCase() === namaSekarang.toLowerCase();
+          });
+
+          if (filtered.length === 0) {
+            daftarUcapanDiv.innerHTML = "<i>Belum ada ucapan untuk nama ini.</i>";
+            return;
+          }
+
+          filtered.reverse().forEach(({ nama, pesan }) => {
             const div = document.createElement("div");
             div.className = "ucapan";
             div.innerHTML = `<strong>${nama}</strong><br/>${pesan}`;
-            container.appendChild(div);
+            daftarUcapanDiv.appendChild(div);
           });
+        } else {
+          daftarUcapanDiv.innerHTML = "<i>Belum ada ucapan.</i>";
         }
       });
     }
 
-    document.getElementById("btnKirim").addEventListener("click", tambahUcapan);
+    // Tombol masuk (submit nama)
+    document.getElementById("btnMasuk").addEventListener("click", () => {
+      const namaInput = document.getElementById("namaUser").value.trim();
+      if (!namaInput) {
+        alert("Isi nama dulu ya!");
+        return;
+      }
 
-    tampilkanUcapan();
+      namaSekarang = namaInput;
+      tampilNamaSpan.textContent = namaSekarang;
+
+      // Sembunyikan input nama, tampilkan form ucapan dan daftar ucapan
+      inputNamaDiv.style.display = "none";
+      inputUcapanDiv.style.display = "block";
+
+      tampilkanUcapan();
+    });
+
+    // Tombol kirim ucapan
+    document.getElementById("btnKirim").addEventListener("click", () => {
+      const pesanInput = document.getElementById("pesanUser").value.trim();
+      if (!pesanInput) {
+        alert("Tulis ucapan dulu ya!");
+        return;
+      }
+
+      const ucapanRef = ref(database, "ucapan");
+      push(ucapanRef, { nama: namaSekarang, pesan: pesanInput });
+
+      document.getElementById("pesanUser").value = "";
+
+      // Refresh ucapan setelah push
+      tampilkanUcapan();
+    });
   </script>
 </body>
 </html>
