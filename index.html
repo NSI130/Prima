@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ucapan Kelulusan Prima</title>
+  <style>
+    body { font-family: Arial; max-width: 600px; margin: auto; padding: 20px; }
+    input, textarea { width: 100%; margin: 10px 0; padding: 8px; }
+    button { padding: 10px 15px; background: teal; color: white; border: none; cursor: pointer; }
+    .ucapan { background: #f1f1f1; padding: 10px; margin-top: 10px; border-left: 4px solid teal; }
+  </style>
+</head>
+<body>
+  <h1>Ucapan Kelulusan</h1>
+  <input type="text" id="nameInput" placeholder="Nama kamu" />
+  <textarea id="messageInput" placeholder="Ucapan kamu..."></textarea>
+  <button onclick="tambahUcapan()">Kirim Ucapan</button>
+
+  <h2>Ucapan yang Masuk:</h2>
+  <div id="daftarUcapan"></div>
+
+  <!-- Firebase SDK v9+ Modular -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBpiW2qQlf56no5nMsBptuyh3XqqvkdFu8",
+      authDomain: "ucapan-prima.firebaseapp.com",
+      databaseURL: "https://ucapan-prima-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "ucapan-prima",
+      storageBucket: "ucapan-prima.firebasestorage.app",
+      messagingSenderId: "937026282948",
+      appId: "1:937026282948:web:b6283bafe96ebe15aaf091",
+      measurementId: "G-89F170B22L"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    function tambahUcapan() {
+      const nama = document.getElementById("nameInput").value.trim();
+      const pesan = document.getElementById("messageInput").value.trim();
+      if (!nama || !pesan) {
+        alert("Isi nama dan ucapan dulu yaa!");
+        return;
+      }
+
+      const ucapanRef = ref(database, "ucapan");
+      push(ucapanRef, { nama, pesan });
+
+      document.getElementById("nameInput").value = "";
+      document.getElementById("messageInput").value = "";
+    }
+
+    function tampilkanUcapan() {
+      const ucapanRef = ref(database, "ucapan");
+      onValue(ucapanRef, (snapshot) => {
+        const data = snapshot.val();
+        const container = document.getElementById("daftarUcapan");
+        container.innerHTML = "";
+
+        if (data) {
+          Object.values(data).reverse().forEach(({ nama, pesan }) => {
+            const div = document.createElement("div");
+            div.className = "ucapan";
+            div.innerHTML = `<strong>${nama}</strong><br/>${pesan}`;
+            container.appendChild(div);
+          });
+        }
+      });
+    }
+
+    tampilkanUcapan();
+  </script>
+</body>
+</html>
