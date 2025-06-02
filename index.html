@@ -1,126 +1,125 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pesan Rahasia</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto+Mono&display=swap');
-  body {
-    margin: 0; padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background: #f8f8f8;
-    color: #333;
-    display: flex; flex-direction: column; align-items: center;
-    min-height: 100vh;
-  }
-  h1 {
-    margin: 30px 0 10px;
-    font-weight: 600;
-    color: #222;
-  }
-  .container {
-    background: #fff;
-    box-shadow: 0 0 12px rgba(0,0,0,0.08);
-    border-radius: 10px;
-    padding: 25px 30px;
-    max-width: 720px;
-    width: 90%;
-    box-sizing: border-box;
-  }
-  label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: #555;
-  }
-  input[type="text"], input[type="password"], textarea {
-    width: 100%;
-    padding: 10px 12px;
-    margin-bottom: 18px;
-    border: 1.8px solid #bbb;
-    border-radius: 7px;
-    font-family: 'Roboto Mono', monospace;
-    font-size: 15px;
-    color: #222;
-    background: #fafafa;
-    transition: border-color 0.25s ease;
-    box-sizing: border-box;
-  }
-  input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
-    outline: none;
-    border-color: #888;
-    background: #fff;
-  }
-  textarea {
-    resize: vertical;
-    min-height: 90px;
-  }
-  button {
-    cursor: pointer;
-    background-color: #666;
-    border: none;
-    color: #eee;
-    font-weight: 600;
-    padding: 12px 22px;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-  }
-  button:hover {
-    background-color: #444;
-  }
-  .flex-row {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-bottom: 28px;
-  }
-  .flex-row > * {
-    flex: 1 1 200px;
-  }
-  .message {
-    font-family: 'Roboto Mono', monospace;
-    background: #eee;
-    border-radius: 9px;
-    padding: 15px 18px;
-    min-height: 110px;
-    white-space: pre-wrap;
-    line-height: 1.42;
-    color: #444;
-    box-sizing: border-box;
-    box-shadow: inset 0 0 4px #ccc;
-    max-width: 100%;
-  }
-  .message.success {
-    background: #e3e3e3;
-    color: #222;
-    border: 1.5px solid #bbb;
-  }
-  .message.error {
-    background: #f9f9f9;
-    color: #b33;
-    border: 1.5px solid #cc6666;
-  }
-  .typing {
-    border-style: dashed;
-    color: #666;
-  }
-  @media (max-width: 600px) {
-    .flex-row {
-      flex-direction: column;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pesan Rahasia</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto+Mono&display=swap');
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f8f8f8;
+      color: #333;
+      display: flex; flex-direction: column; align-items: center;
+      min-height: 100vh;
+    }
+    h1 {
+      margin: 30px 0 10px;
+      font-weight: 600;
+      color: #222;
+    }
+    .container {
+      background: #fff;
+      box-shadow: 0 0 12px rgba(0,0,0,0.08);
+      border-radius: 10px;
+      padding: 25px 30px;
+      max-width: 720px;
+      width: 90%;
+      box-sizing: border-box;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #555;
+    }
+    input[type="text"], input[type="password"], textarea {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 18px;
+      border: 1.8px solid #bbb;
+      border-radius: 7px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 15px;
+      color: #222;
+      background: #fafafa;
+      transition: border-color 0.25s ease;
+      box-sizing: border-box;
+    }
+    input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+      outline: none;
+      border-color: #888;
+      background: #fff;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 90px;
     }
     button {
-      width: 100%;
+      cursor: pointer;
+      background-color: #666;
+      border: none;
+      color: #eee;
+      font-weight: 600;
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
     }
-  }
-</style>
+    button:hover {
+      background-color: #444;
+    }
+    .flex-row {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .flex-row > * {
+      flex: 1 1 200px;
+    }
+    .message {
+      font-family: 'Roboto Mono', monospace;
+      background: #eee;
+      border-radius: 9px;
+      padding: 15px 18px;
+      min-height: 110px;
+      white-space: pre-wrap;
+      line-height: 1.42;
+      color: #444;
+      box-sizing: border-box;
+      box-shadow: inset 0 0 4px #ccc;
+      max-width: 100%;
+    }
+    .message.success {
+      background: #e3e3e3;
+      color: #222;
+      border: 1.5px solid #bbb;
+    }
+    .message.error {
+      background: #f9f9f9;
+      color: #b33;
+      border: 1.5px solid #cc6666;
+    }
+    .typing {
+      border-style: dashed;
+      color: #666;
+    }
+    @media (max-width: 600px) {
+      .flex-row {
+        flex-direction: column;
+      }
+      button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
 
 <h1>Pesan Rahasia</h1>
 <div class="container">
-
   <div>
     <label for="namaPenerima">Cari Pesan untuk:</label>
     <input type="text" id="namaPenerima" placeholder="Ketik nama penerima..." autocomplete="off" />
@@ -143,11 +142,26 @@
     <button id="btnKirim">Kirim Pesan</button>
     <div id="statusPengirim" class="message" style="margin-top:10px; min-height:140px;"></div>
   </div>
-
 </div>
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+
 <script>
-  const dbPesan = {};
+  const firebaseConfig = {
+    apiKey: "AIzaSyBpiW2qQlf56no5nMsBptuyh3XqqvkdFu8",
+    authDomain: "ucapan-prima.firebaseapp.com",
+    databaseURL: "https://ucapan-prima-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "ucapan-prima",
+    storageBucket: "ucapan-prima.appspot.com",
+    messagingSenderId: "937026282948",
+    appId: "1:937026282948:web:b6283bafe96ebe15aaf091",
+    measurementId: "G-89F170B22L"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
 
   const inputNamaPenerima = document.getElementById('namaPenerima');
   const btnCek = document.getElementById('btnCek');
@@ -159,7 +173,6 @@
   const btnKirim = document.getElementById('btnKirim');
   const statusPengirim = document.getElementById('statusPengirim');
 
-  // Fungsi animasi ketik
   function tampilkanTyping(element, text, cls = '') {
     element.textContent = '';
     element.className = 'message ' + cls + ' typing';
@@ -175,7 +188,7 @@
     }, 30);
   }
 
-  // Cari pesan penerima
+  // Cari pesan
   btnCek.addEventListener('click', () => {
     const nama = inputNamaPenerima.value.trim().toLowerCase();
     statusPenerima.className = 'message';
@@ -184,66 +197,56 @@
       statusPenerima.textContent = 'Isi dulu namamu, dong! 😅';
       return;
     }
-    statusPenerima.textContent = '';
-    tampilkanTyping(statusPenerima, 'Mencari pesan untuk "' + nama + '"...');
+    tampilkanTyping(statusPenerima, `Mencari pesan untuk "${nama}"...`);
 
     setTimeout(() => {
-      if (dbPesan[nama]) {
-        const pesanGabungan = dbPesan[nama].map((p, i) => `${i + 1}. ${p}`).join('\n\n');
-        tampilkanTyping(statusPenerima, `Pesan untuk "${nama}":\n\n${pesanGabungan}`, 'success');
-      } else {
-        tampilkanTyping(statusPenerima, `Oops! Belum ada pesan buat "${nama}".\nTunggu Prima kirim ya!`, 'error');
-      }
+      const ref = database.ref(`pesan/${nama}`);
+      ref.once('value', snapshot => {
+        const data = snapshot.val();
+        if (data) {
+          const pesanList = Object.values(data);
+          const pesanGabungan = pesanList.map((p, i) => `${i + 1}. ${p}`).join('\n\n');
+          tampilkanTyping(statusPenerima, `Pesan untuk "${nama}":\n\n${pesanGabungan}`, 'success');
+        } else {
+          tampilkanTyping(statusPenerima, `Oops! Belum ada pesan buat "${nama}".`, 'error');
+        }
+      });
     }, 1300);
   });
 
-  // Kirim pesan dengan kata sandi ya
+  // Kirim pesan
   btnKirim.addEventListener('click', () => {
     statusPengirim.className = 'message';
     const namaUntuk = inputNamaUntuk.value.trim().toLowerCase();
     const pesan = inputPesanKirim.value.trim();
     const password = inputPassword.value.trim();
 
-    if (!namaUntuk) {
+    if (!namaUntuk || !pesan || !password) {
       statusPengirim.classList.add('error');
-      statusPengirim.textContent = 'Isi nama penerimanya dulu, ya!';
-      return;
-    }
-    if (!pesan) {
-      statusPengirim.classList.add('error');
-      statusPengirim.textContent = 'Pesan gak boleh kosong!';
-      return;
-    }
-    if (!password) {
-      statusPengirim.classList.add('error');
-      statusPengirim.textContent = 'Password harus diisi.';
+      statusPengirim.textContent = 'Semua kolom harus diisi!';
       return;
     }
     if (password !== 'Harimau') {
       statusPengirim.classList.add('error');
-      statusPengirim.textContent = 'Password salah, kalau kamu ngga dikasih jangan ngadi-ngadi, coba lagi ya!';
+      statusPengirim.textContent = 'Password salah, coba lagi!';
       return;
     }
 
-    if (!dbPesan[namaUntuk]) dbPesan[namaUntuk] = [];
-    dbPesan[namaUntuk].push(pesan);
-
-    tampilkanTyping(statusPengirim, `Pesan untuk "${namaUntuk}" berhasil dikirim! 🎉`, 'success');
-
-    // Reset input
-    inputNamaUntuk.value = '';
-    inputPesanKirim.value = '';
-    inputPassword.value = '';
+    const ref = database.ref(`pesan/${namaUntuk}`);
+    ref.push(pesan).then(() => {
+      tampilkanTyping(statusPengirim, `Pesan untuk "${namaUntuk}" berhasil dikirim! 🎉`, 'success');
+      inputNamaUntuk.value = '';
+      inputPesanKirim.value = '';
+      inputPassword.value = '';
+    }).catch(err => {
+      statusPengirim.classList.add('error');
+      statusPengirim.textContent = 'Gagal mengirim pesan.';
+      console.error(err);
+    });
   });
 
-  // Enter untuk cari pesan
-  inputNamaPenerima.addEventListener('keydown', e => {
-    if (e.key === 'Enter') btnCek.click();
-  });
-  // Enter untuk kirim pesan
-  inputPassword.addEventListener('keydown', e => {
-    if (e.key === 'Enter') btnKirim.click();
-  });
+  inputNamaPenerima.addEventListener('keydown', e => { if (e.key === 'Enter') btnCek.click(); });
+  inputPassword.addEventListener('keydown', e => { if (e.key === 'Enter') btnKirim.click(); });
 </script>
 
 </body>
