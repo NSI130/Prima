@@ -2,6 +2,268 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Ucapan Spesial Nashri (Dengan Passkey & Firebase)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f5f7fa;
+      color: #2e3440;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .container {
+      background: #fff;
+      border-radius: 20px;
+      padding: 2rem 3rem;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      margin-bottom: 3rem;
+      user-select: none;
+    }
+    h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #3b4252;
+      letter-spacing: 1.3px;
+      user-select: none;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 12px 18px;
+      font-size: 1rem;
+      border-radius: 12px;
+      border: 2px solid #d8dee9;
+      background-color: #eceff4;
+      color: #2e3440;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      outline-offset: 2px;
+      resize: vertical;
+      margin-bottom: 1rem;
+      font-family: 'Poppins', sans-serif;
+    }
+    input:focus, textarea:focus {
+      border-color: #5e81ac;
+      box-shadow: 0 0 10px rgba(94,129,172,0.5);
+      background-color: #fff;
+    }
+    button {
+      background: #4c566a;
+      color: #eceff4;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 18px;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(76, 86, 106, 0.38);
+      transition: background 0.35s ease, transform 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      margin-bottom: 1rem;
+      width: 100%;
+    }
+    button:hover:not(:disabled) {
+      background: #3b4252;
+      transform: scale(1.05);
+    }
+    button:disabled {
+      cursor: not-allowed;
+      background: #a3a9b2;
+      box-shadow: none;
+      transform: none;
+    }
+    #output {
+      background: #e5e9f0;
+      padding: 1.6rem 2rem;
+      border-radius: 16px;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      color: #2e3440;
+      box-shadow: 0 0 20px rgba(94,129,172,0.35);
+      min-height: 4rem;
+      white-space: pre-line;
+      user-select: text;
+      margin-top: 0.5rem;
+      display: none;
+    }
+    .section-title {
+      margin-bottom: 1rem;
+      color: #5e81ac;
+      font-weight: 600;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="submitSection">
+    <h1>Submit Ucapan (Butuh Passkey)</h1>
+    <input type="text" id="passkeyInput" placeholder="Masukkan Passkey" autocomplete="off" spellcheck="false" />
+    <input type="text" id="nameInput" placeholder="Nama Kamu" autocomplete="off" spellcheck="false" disabled />
+    <textarea id="messageInput" placeholder="Tulis ucapanmu di sini..." rows="4" disabled></textarea>
+    <button id="submitBtn" disabled>Kirim Ucapan</button>
+    <div id="submitOutput"></div>
+  </div>
+
+  <div class="container" id="searchSection">
+    <h1>Cari Ucapan Berdasarkan Nama</h1>
+    <input type="text" id="searchNameInput" placeholder="Ketik nama yang dicari..." autocomplete="off" spellcheck="false" />
+    <button id="searchBtn">Cari</button>
+    <div id="output"></div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+
+  <script>
+    // --- CONFIG FIREBASE ---
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // --- PASSKEY ---
+    const correctPasskey = "HalloNetwork1";
+
+    // Elements Submit
+    const passkeyInput = document.getElementById("passkeyInput");
+    const nameInput = document.getElementById("nameInput");
+    const messageInput = document.getElementById("messageInput");
+    const submitBtn = document.getElementById("submitBtn");
+    const submitOutput = document.getElementById("submitOutput");
+
+    // Elements Search
+    const searchNameInput = document.getElementById("searchNameInput");
+    const searchBtn = document.getElementById("searchBtn");
+    const output = document.getElementById("output");
+
+    // Cek passkey dan enable input submit kalau benar
+    passkeyInput.addEventListener("input", () => {
+      if(passkeyInput.value.trim() === correctPasskey){
+        nameInput.disabled = false;
+        messageInput.disabled = false;
+        submitBtn.disabled = false;
+        submitOutput.textContent = "Passkey benar, silakan isi nama dan ucapanmu.";
+        submitOutput.style.color = "green";
+      } else {
+        nameInput.disabled = true;
+        messageInput.disabled = true;
+        submitBtn.disabled = true;
+        submitOutput.textContent = "";
+      }
+    });
+
+    // Kirim ucapan ke Firestore
+    submitBtn.addEventListener("click", async () => {
+      const nama = nameInput.value.trim();
+      const pesan = messageInput.value.trim();
+
+      if(!nama || !pesan){
+        submitOutput.textContent = "Nama dan ucapan tidak boleh kosong.";
+        submitOutput.style.color = "red";
+        return;
+      }
+
+      try {
+        // Simpan dengan key nama lowercase untuk pencarian case insensitive
+        await db.collection("ucapan").doc(nama.toLowerCase()).set({
+          nama: nama,
+          pesan: pesan,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        submitOutput.textContent = `Ucapan untuk "${nama}" berhasil disimpan.`;
+        submitOutput.style.color = "green";
+        // Reset input
+        nameInput.value = "";
+        messageInput.value = "";
+        passkeyInput.value = "";
+        nameInput.disabled = true;
+        messageInput.disabled = true;
+        submitBtn.disabled = true;
+      } catch (error) {
+        submitOutput.textContent = "Terjadi kesalahan saat menyimpan ucapan.";
+        submitOutput.style.color = "red";
+        console.error(error);
+      }
+    });
+
+    // Cari ucapan berdasarkan nama (case insensitive)
+    searchBtn.addEventListener("click", async () => {
+      const searchName = searchNameInput.value.trim().toLowerCase();
+      output.style.display = "none";
+      output.textContent = "";
+
+      if(!searchName){
+        alert("Silakan masukkan nama yang ingin dicari.");
+        return;
+      }
+
+      try {
+        const doc = await db.collection("ucapan").doc(searchName).get();
+        if(doc.exists){
+          const data = doc.data();
+          output.textContent = `Ucapan untuk ${data.nama}:\n\n${data.pesan}`;
+        } else {
+          output.textContent = `Maaf, ucapan untuk nama "${searchNameInput.value.trim()}" belum tersedia.`;
+        }
+      } catch (error) {
+        output.textContent = "Terjadi kesalahan saat mencari ucapan.";
+        console.error(error);
+      }
+
+      output.style.display = "block";
+    });
+
+    // Optional: enter key di search input
+    searchNameInput.addEventListener("keydown", (e) => {
+      if(e.key === "Enter"){
+        searchBtn.click();
+      }
+    });
+
+    // Optional: enter key di submit inputs untuk kirim
+    nameInput.addEventListener("keydown", (e) => {
+      if(e.key === "Enter" && !submitBtn.disabled){
+        e.preventDefault();
+        submitBtn.click();
+      }
+    });
+    messageInput.addEventListener("keydown", (e) => {
+      if(e.key === "Enter" && e.shiftKey && !submitBtn.disabled){
+        // Allow line break with shift+enter
+        return;
+      }
+      if(e.key === "Enter" && !submitBtn.disabled){
+        e.preventDefault();
+        submitBtn.click();
+      }
+    });
+  </script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
   <title>Ucapan Kelulusan Prima</title>
   <style>
     body { font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; }
