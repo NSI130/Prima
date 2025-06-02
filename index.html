@@ -5,134 +5,105 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Penerima & Pengirim Interaktif</title>
 <style>
-  /* Warna soft pastel dan font nyaman */
-  :root {
-    --color-bg: #f9f9fb;
-    --color-primary: #6a8caf;
-    --color-primary-dark: #557799;
-    --color-secondary: #a3c4f3;
-    --color-accent: #f7d6e0;
-    --color-success: #3a7d44;
-    --color-error: #d03e3e;
-    --color-text: #3a3a3a;
-    --color-input-bg: #fff;
-    --radius: 12px;
-  }
-
+  /* Reset & Base */
   * {
     box-sizing: border-box;
   }
-
   body {
-    margin: 0; padding: 30px 15px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: var(--color-bg);
-    color: var(--color-text);
+    background: #f5f7fa;
+    margin: 0; 
+    padding: 20px;
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 28px;
+    flex-wrap: wrap;
+    gap: 30px;
     min-height: 100vh;
+    color: #334e68;
   }
-
   .box {
-    background: var(--color-input-bg);
-    border-radius: var(--radius);
+    background: #ffffffdd;
+    border-radius: 16px;
     padding: 28px 32px;
-    box-shadow: 0 8px 25px rgba(106,140,175,0.15);
-    width: 100%;
-    max-width: 380px;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+    width: 350px;
+    max-width: 100%;
+    user-select: none;
     display: flex;
     flex-direction: column;
-    user-select: none;
   }
-
   h2 {
-    margin: 0 0 18px;
-    color: var(--color-primary);
-    text-align: center;
+    color: #556cd6;
+    margin-bottom: 20px;
     font-weight: 700;
     font-size: 1.4rem;
+    text-align: center;
   }
-
   label {
     font-weight: 600;
-    margin-bottom: 8px;
-    display: block;
-    color: #455a75;
-    user-select: text;
+    margin-bottom: 6px;
+    color: #3e566c;
   }
-
   input, textarea {
     width: 100%;
-    background: var(--color-input-bg);
-    border: 2px solid #cdd7e0;
-    border-radius: var(--radius);
-    padding: 12px 16px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    border: 1.6px solid #cbd5e1;
+    border-radius: 10px;
     font-size: 1rem;
     font-family: inherit;
-    transition: border-color 0.3s ease, box-shadow 0.25s ease;
-    resize: vertical;
-    min-height: 44px;
-  }
-  textarea {
-    min-height: 100px;
+    background: #f8fafc;
+    color: #334e68;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
   input:focus, textarea:focus {
     outline: none;
-    border-color: var(--color-primary);
-    box-shadow: 0 0 8px var(--color-primary-dark);
+    border-color: #556cd6;
+    box-shadow: 0 0 10px rgba(85, 108, 214, 0.35);
+    background: #ffffff;
   }
-
+  textarea {
+    min-height: 90px;
+    resize: vertical;
+  }
   button {
-    margin-top: auto;
-    background: var(--color-primary);
-    border: none;
-    padding: 14px 0;
-    border-radius: var(--radius);
-    font-weight: 700;
-    font-size: 1.15rem;
+    background: #6b7fd7;
     color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 12px;
     cursor: pointer;
+    font-weight: 700;
+    font-size: 1.1rem;
+    width: 100%;
     transition: background-color 0.3s ease;
-    user-select: none;
   }
   button:hover:not(:disabled) {
-    background: var(--color-primary-dark);
+    background: #4c5dbd;
   }
   button:disabled {
-    background: var(--color-primary);
-    opacity: 0.55;
+    background: #a0a7d9aa;
     cursor: not-allowed;
   }
-
   .message {
-    margin-top: 18px;
-    min-height: 42px;
+    margin-top: 14px;
     font-weight: 600;
-    font-size: 1rem;
     text-align: center;
-    color: var(--color-success);
-    padding: 12px 16px;
-    border-radius: var(--radius);
-    background: #e7f3e7;
-    box-shadow: inset 0 0 5px rgba(58,125,68,0.15);
+    min-height: 38px;
+    line-height: 1.4;
+    color: #2e7d32;
     white-space: pre-wrap;
-    user-select: text;
+    font-family: 'Courier New', Courier, monospace;
   }
-
   .message.error {
-    color: var(--color-error);
-    background: #fbe6e6;
-    box-shadow: inset 0 0 6px rgba(208,62,62,0.3);
+    color: #d32f2f;
   }
-
   .spinner {
-    margin: 14px auto;
+    margin: 18px auto;
     width: 36px;
     height: 36px;
-    border: 5px solid #cdd7e0;
-    border-top-color: var(--color-primary);
+    border: 4px solid #cbd5e1;
+    border-top-color: #556cd6;
     border-radius: 50%;
     animation: spin 1s linear infinite;
   }
@@ -140,33 +111,32 @@
     to { transform: rotate(360deg); }
   }
 
-  /* Animasi ketik (typing effect) */
-  @keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
-  }
-  @keyframes blink {
-    50% { border-color: transparent }
-  }
-
-  .typing-text {
-    font-family: 'Courier New', Courier, monospace;
-    overflow: hidden;
-    border-right: 2px solid var(--color-primary);
+  /* Animasi ketik */
+  .typing {
+    border-right: 2px solid #556cd6;
     white-space: nowrap;
-    animation:
-      typing 1.5s steps(40, end),
-      blink 0.7s step-end infinite;
+    overflow: hidden;
+    animation: typingAnim 1.5s steps(30, end), blinkCaret 0.75s step-end infinite;
+  }
+  @keyframes typingAnim {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+  @keyframes blinkCaret {
+    50% { border-color: transparent; }
   }
 
-  /* Responsive */
-  @media (min-width: 800px) {
+  /* Responsif */
+  @media (max-width: 400px) {
     body {
-      justify-content: center;
-      padding: 40px 20px;
+      padding: 15px;
     }
     .box {
-      width: 360px;
+      width: 100%;
+      padding: 24px;
+    }
+    h2 {
+      font-size: 1.2rem;
     }
   }
 </style>
@@ -176,9 +146,9 @@
 <div class="box" aria-label="Bagian Penerima">
   <h2>Cek deh, ada pesan untukmu ngga</h2>
   <label for="namaPenerima">Masukkan namamu</label>
-  <input type="text" id="namaPenerima" placeholder="Tulis namamu di sini..." autocomplete="off" aria-describedby="statusPenerima" />
-  <button id="cekPesanBtn" aria-controls="statusPenerima" aria-live="polite">Cek Pesan</button>
-  <div id="statusPenerima" class="message" role="region" aria-live="polite" aria-atomic="true"></div>
+  <input type="text" id="namaPenerima" placeholder="Tulis namamu di sini..." autocomplete="off" />
+  <button id="cekPesanBtn">Cek Pesan</button>
+  <div id="statusPenerima" class="message" aria-live="polite"></div>
 </div>
 
 <div class="box" aria-label="Bagian Pengirim">
@@ -193,11 +163,12 @@
   <input type="password" id="passwordKirim" placeholder="Masukkan password rahasia" autocomplete="off" />
   
   <button id="kirimPesanBtn">Kirim Pesan</button>
-  <div id="statusPengirim" class="message" role="region" aria-live="polite" aria-atomic="true"></div>
+  <div id="statusPengirim" class="message" aria-live="polite"></div>
 </div>
 
 <script>
-  // Database pesan simulasi, case insensitive key
+  // Simulasi database pesan
+  // key: nama penerima lowercase, value: array pesan string
   const dbPesan = {
     'prima': ['Hai Prima! Semangat terus ya!', 'Jangan lupa makan yang teratur 😊'],
     'nashri': ['Halo Nashri, tetap jaga kesehatan!'],
@@ -213,50 +184,56 @@
   const inputPassword = document.getElementById('passwordKirim');
   const statusPengirim = document.getElementById('statusPengirim');
 
-  // Fungsi menampilkan spinner loading
+  // Fungsi untuk tampilkan spinner loading
   function showSpinner(target) {
     target.innerHTML = '<div class="spinner" aria-label="Memuat..."></div>';
   }
 
-  // Fungsi menghapus spinner dan menampilkan pesan dengan animasi ketik
-  function hideSpinnerWithTyping(target, text, isError = false) {
+  // Fungsi hilangkan spinner dan ganti pesan
+  function hideSpinnerWithMessage(target, message, isError = false) {
+    target.textContent = '';
     target.classList.toggle('error', isError);
-    target.textContent = ''; // Clear dulu
+    typeWriter(target, message);
+  }
 
-    // Animasi ketik
+  // Fungsi animasi ketik (typewriter effect)
+  function typeWriter(element, text, speed = 40) {
+    element.classList.add('typing');
     let i = 0;
-    const speed = 40;
-    function typeWriter() {
+    element.textContent = '';
+    function typing() {
       if (i < text.length) {
-        target.textContent += text.charAt(i);
+        element.textContent += text.charAt(i);
         i++;
-        setTimeout(typeWriter, speed);
+        setTimeout(typing, speed);
+      } else {
+        element.classList.remove('typing');
       }
     }
-    typeWriter();
+    typing();
   }
 
   // Event cek pesan penerima
   btnCek.addEventListener('click', () => {
     const namaRaw = inputNamaPenerima.value.trim();
     if (!namaRaw) {
-      statusPenerima.classList.add('error');
-      statusPenerima.textContent = 'Tolong isi namamu dulu ya!';
+      hideSpinnerWithMessage(statusPenerima, 'Tolong isi namamu dulu ya!', true);
       return;
     }
-    statusPenerima.classList.remove('error');
+
     showSpinner(statusPenerima);
 
+    // Simulasi delay 1.5 detik
     setTimeout(() => {
       const namaLower = namaRaw.toLowerCase();
       const pesanList = dbPesan[namaLower];
 
       if (pesanList && pesanList.length > 0) {
-        // Gabungkan semua pesan dengan numbering
-        const semuaPesan = pesanList.map((p,i) => `${i+1}. ${p}`).join('\n\n');
-        hideSpinnerWithTyping(statusPenerima, semuaPesan);
+        // Tampilkan semua pesan dengan format rapi, tiap pesan baru di baris baru
+        const semuaPesan = pesanList.map((p, i) => `${i+1}. ${p}`).join('\n');
+        hideSpinnerWithMessage(statusPenerima, semuaPesan);
       } else {
-        hideSpinnerWithTyping(statusPenerima, 
+        hideSpinnerWithMessage(statusPenerima, 
           'Maaf, belum ada pesan untukmu. Tetap semangat dan jangan menyerah!', false);
       }
     }, 1500);
@@ -268,24 +245,27 @@
     const pesanKirimRaw = inputPesanKirim.value.trim();
     const passRaw = inputPassword.value;
 
-    statusPengirim.classList.remove('error');
-
     if (!namaUntukRaw || !pesanKirimRaw || !passRaw) {
-      statusPengirim.classList.add('error');
       statusPengirim.textContent = 'Semua kolom harus diisi ya!';
+      statusPengirim.classList.add('error');
       return;
     }
     if (passRaw !== 'AraCintaNashri') {
-      statusPengirim.classList.add('error');
       statusPengirim.textContent = 'Password rahasia salah, coba lagi ya!';
+      statusPengirim.classList.add('error');
       return;
     }
 
+    // Disable tombol supaya gak spam
     btnKirim.disabled = true;
+    statusPengirim.classList.remove('error');
     statusPengirim.textContent = 'Mengirim pesan...';
-
+    
+    // Simulasi delay kirim pesan 1.5 detik
     setTimeout(() => {
       const namaLower = namaUntukRaw.toLowerCase();
+
+      // Kalau penerima belum ada di db, buat array baru
       if (!dbPesan[namaLower]) {
         dbPesan[namaLower] = [];
       }
@@ -294,6 +274,7 @@
       statusPengirim.textContent = 'Pesan berhasil dikirim! 🎉';
       btnKirim.disabled = false;
 
+      // Reset form pengirim
       inputNamaUntuk.value = '';
       inputPesanKirim.value = '';
       inputPassword.value = '';
