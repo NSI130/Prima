@@ -3,34 +3,163 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Ucapan Firebase Modular v9+</title>
+<title>Ucapan Firebase Modern</title>
 <style>
-  body { font-family: Arial, sans-serif; max-width: 480px; margin: 2rem auto; }
-  input, textarea, button { width: 100%; margin: 8px 0; padding: 10px; font-size: 1rem; }
-  #output, #status { margin-top: 1rem; min-height: 50px; background: #eee; padding: 10px; border-radius: 8px; }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #f5f7fa;
+    color: #333;
+    margin: 0; padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  main {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 480px;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+
+  h1 {
+    font-weight: 600;
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+    text-align: center;
+    color: #1a202c;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+    color: #4a5568;
+  }
+
+  input[type="text"],
+  input[type="password"],
+  textarea {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    border: 1.5px solid #cbd5e0;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    resize: vertical;
+    background: #f9fafb;
+  }
+  input[type="text"]:focus,
+  input[type="password"]:focus,
+  textarea:focus {
+    border-color: #4299e1;
+    outline: none;
+    background: #fff;
+  }
+
+  button {
+    width: 100%;
+    padding: 0.75rem;
+    background: #3182ce;
+    border: none;
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  button:hover {
+    background: #2b6cb0;
+  }
+
+  #output, #status {
+    min-height: 3rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    line-height: 1.4;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  #output.show,
+  #status.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #output {
+    background: #e2e8f0;
+    color: #2d3748;
+  }
+
+  #status {
+    background: #edf2f7;
+    font-weight: 600;
+  }
+
+  #status.success {
+    background: #9ae6b4;
+    color: #22543d;
+  }
+  #status.error {
+    background: #feb2b2;
+    color: #742a2a;
+  }
+
+  hr {
+    margin: 2rem 0;
+    border: none;
+    border-top: 1px solid #e2e8f0;
+  }
+
 </style>
 </head>
 <body>
 
-<h2>Ucapan Firebase v9+ Modular</h2>
+<main>
+  <h1>Ucapan Firebase Modern</h1>
 
-<input id="nameInput" placeholder="Masukkan nama untuk cari ucapan" />
-<button onclick="cariUcapan()">Cari Ucapan</button>
-<div id="output"></div>
+  <section>
+    <label for="nameInput">Cari ucapan berdasarkan nama:</label>
+    <input id="nameInput" type="text" placeholder="Masukkan nama..." autocomplete="off" />
+    <button id="btnCari">Cari Ucapan</button>
+    <div id="output"></div>
+  </section>
 
-<hr>
+  <hr />
 
-<input id="senderName" placeholder="Nama pengirim" />
-<textarea id="messageInput" placeholder="Tulis ucapanmu di sini..." rows="3"></textarea>
-<input id="passkeyInput" type="password" placeholder="Passkey kirim" />
-<button onclick="kirimUcapan()">Kirim Ucapan</button>
-<div id="status"></div>
+  <section>
+    <label for="senderName">Nama pengirim:</label>
+    <input id="senderName" type="text" placeholder="Nama kamu..." autocomplete="off" />
+    <label for="messageInput">Tulis ucapan:</label>
+    <textarea id="messageInput" rows="3" placeholder="Tulis ucapanmu di sini..."></textarea>
+    <label for="passkeyInput">Passkey kirim:</label>
+    <input id="passkeyInput" type="password" placeholder="Masukkan passkey..." autocomplete="off" />
+    <button id="btnKirim">Kirim Ucapan</button>
+    <div id="status"></div>
+  </section>
+</main>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
   import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-  // Konfigurasi Firebase kamu
+  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyBpiW2qQlf56no5nMsBptuyh3XqqvkdFu8",
     authDomain: "ucapan-prima.firebaseapp.com",
@@ -42,73 +171,100 @@
     measurementId: "G-89F170B22L"
   };
 
-  // Inisialisasi Firebase
+  // Initialize Firebase and Firestore
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
   const PASSKEY = "AraCintaNashri";
 
+  // Elements
+  const nameInput = document.getElementById('nameInput');
+  const btnCari = document.getElementById('btnCari');
+  const output = document.getElementById('output');
+
+  const senderName = document.getElementById('senderName');
+  const messageInput = document.getElementById('messageInput');
+  const passkeyInput = document.getElementById('passkeyInput');
+  const btnKirim = document.getElementById('btnKirim');
+  const status = document.getElementById('status');
+
+  btnCari.addEventListener('click', cariUcapan);
+  btnKirim.addEventListener('click', kirimUcapan);
+
   async function cariUcapan() {
-    const nama = document.getElementById('nameInput').value.trim().toLowerCase();
-    const output = document.getElementById('output');
-    if(!nama) {
-      output.textContent = "Isi nama dulu ya!";
+    const nama = nameInput.value.trim().toLowerCase();
+    output.classList.remove('show');
+    if (!nama) {
+      showOutput("Isi nama dulu ya!");
       return;
     }
-    output.textContent = "Mencari ucapan...";
+    showOutput("Mencari ucapan...");
     try {
       const docRef = doc(db, "ucapan", nama);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const data = docSnap.data();
-        output.textContent = data.message;
+        showOutput(data.message || "Ucapan kosong.");
       } else {
-        output.textContent = `Maaf, ucapan untuk ${nama} belum tersedia.`;
+        showOutput(`Maaf, ucapan untuk "${nama}" belum tersedia.`);
       }
-    } catch(e) {
-      output.textContent = "Gagal mengambil data, coba lagi nanti.";
+    } catch (e) {
       console.error(e);
+      showOutput("Gagal mengambil data, coba lagi nanti.");
     }
   }
 
   async function kirimUcapan() {
-    const senderName = document.getElementById('senderName').value.trim();
-    const message = document.getElementById('messageInput').value.trim();
-    const passkey = document.getElementById('passkeyInput').value.trim();
-    const status = document.getElementById('status');
+    clearStatus();
+    const sender = senderName.value.trim();
+    const message = messageInput.value.trim();
+    const passkey = passkeyInput.value.trim();
 
-    if(!senderName || !message || !passkey) {
-      status.textContent = "Semua kolom harus diisi.";
-      status.style.color = "red";
+    if (!sender || !message || !passkey) {
+      showStatus("Semua kolom harus diisi.", "error");
       return;
     }
-    if(passkey !== PASSKEY) {
-      status.textContent = "Passkey salah!";
-      status.style.color = "red";
+    if (passkey !== PASSKEY) {
+      showStatus("Passkey salah!", "error");
       return;
     }
 
-    status.textContent = "Mengirim ucapan...";
-    status.style.color = "black";
+    showStatus("Mengirim ucapan...", "pending");
 
     try {
-      await setDoc(doc(db, "ucapan", senderName.toLowerCase()), {
-        sender: senderName,
+      await setDoc(doc(db, "ucapan", sender.toLowerCase()), {
+        sender: sender,
         message: message,
         timestamp: serverTimestamp()
       });
-      status.textContent = "Ucapan berhasil dikirim! Terima kasih.";
-      status.style.color = "green";
+      showStatus("Ucapan berhasil dikirim! Terima kasih.", "success");
 
       // Reset form
-      document.getElementById('senderName').value = "";
-      document.getElementById('messageInput').value = "";
-      document.getElementById('passkeyInput').value = "";
-    } catch(e) {
-      status.textContent = "Gagal mengirim ucapan, coba lagi nanti.";
-      status.style.color = "red";
+      senderName.value = "";
+      messageInput.value = "";
+      passkeyInput.value = "";
+    } catch (e) {
       console.error(e);
+      showStatus("Gagal mengirim ucapan, coba lagi nanti.", "error");
     }
+  }
+
+  // Fungsi tampil output cari
+  function showOutput(text) {
+    output.textContent = text;
+    output.classList.add('show');
+  }
+
+  // Fungsi tampil status kirim
+  function showStatus(text, type) {
+    status.textContent = text;
+    status.classList.remove('success', 'error', 'pending', 'show');
+    status.classList.add(type, 'show');
+  }
+
+  function clearStatus() {
+    status.textContent = "";
+    status.classList.remove('success', 'error', 'pending', 'show');
   }
 </script>
 
