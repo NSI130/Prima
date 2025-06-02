@@ -1,137 +1,250 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ucapan Interaktif</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
-    body {
-      margin: 0;
-      padding: 0;
-      background: #f2f2f2;
-      color: #333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .container {
-      background: #fff;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 500px;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 24px;
-      font-size: 24px;
-    }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-    }
-    input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-      background-color: #f9f9f9;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pesan Rahasia</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto+Mono&display=swap');
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #f8f8f8;
+    color: #333;
+    display: flex; flex-direction: column; align-items: center;
+    min-height: 100vh;
+  }
+  h1 {
+    margin: 30px 0 10px;
+    font-weight: 600;
+    color: #222;
+  }
+  .container {
+    background: #fff;
+    box-shadow: 0 0 12px rgba(0,0,0,0.08);
+    border-radius: 10px;
+    padding: 25px 30px;
+    max-width: 720px;
+    width: 90%;
+    box-sizing: border-box;
+  }
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #555;
+  }
+  input[type="text"], input[type="password"], textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 18px;
+    border: 1.8px solid #bbb;
+    border-radius: 7px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 15px;
+    color: #222;
+    background: #fafafa;
+    transition: border-color 0.25s ease;
+    box-sizing: border-box;
+  }
+  input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+    outline: none;
+    border-color: #888;
+    background: #fff;
+  }
+  textarea {
+    resize: vertical;
+    min-height: 90px;
+  }
+  button {
+    cursor: pointer;
+    background-color: #666;
+    border: none;
+    color: #eee;
+    font-weight: 600;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #444;
+  }
+  .flex-row {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+  .flex-row > * {
+    flex: 1 1 200px;
+  }
+  .message {
+    font-family: 'Roboto Mono', monospace;
+    background: #eee;
+    border-radius: 9px;
+    padding: 15px 18px;
+    min-height: 110px;
+    white-space: pre-wrap;
+    line-height: 1.42;
+    color: #444;
+    box-sizing: border-box;
+    box-shadow: inset 0 0 4px #ccc;
+    max-width: 100%;
+  }
+  .message.success {
+    background: #e3e3e3;
+    color: #222;
+    border: 1.5px solid #bbb;
+  }
+  .message.error {
+    background: #f9f9f9;
+    color: #b33;
+    border: 1.5px solid #cc6666;
+  }
+  .typing {
+    border-style: dashed;
+    color: #666;
+  }
+  @media (max-width: 600px) {
+    .flex-row {
+      flex-direction: column;
     }
     button {
       width: 100%;
-      padding: 12px;
-      background: #555;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background 0.3s ease;
     }
-    button:hover {
-      background: #333;
-    }
-    .result {
-      margin-top: 24px;
-      padding: 16px;
-      border-radius: 12px;
-      background: #eee;
-      min-height: 120px;
-      white-space: pre-line;
-      font-size: 16px;
-    }
-    .typewriter span {
-      display: inline-block;
-      overflow: hidden;
-      white-space: nowrap;
-      border-right: .15em solid #555;
-      animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
-    }
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-    @keyframes blink-caret {
-      from, to { border-color: transparent }
-      50% { border-color: #555; }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>Masukkan Nama & Kode</h1>
-    <label for="nama">Nama:</label>
-    <input type="text" id="nama" placeholder="Contoh: Nashri" />
 
-    <label for="kode">Kode Akses:</label>
-    <input type="password" id="kode" placeholder="Masukkan kode rahasia" />
+<h1>Pesan Rahasia</h1>
+<div class="container">
 
-    <button onclick="tampilkanUcapan()">Cari Ucapan</button>
-    <div id="hasil" class="result"></div>
+  <div>
+    <label for="namaPenerima">Cari Pesan untuk:</label>
+    <input type="text" id="namaPenerima" placeholder="Ketik nama penerima..." autocomplete="off" />
+    <button id="btnCek">Cari</button>
+    <div id="statusPenerima" class="message" style="margin-top:10px; min-height:140px;"></div>
   </div>
 
-  <script>
-    function tampilkanUcapan() {
-      const nama = document.getElementById("nama").value.trim();
-      const passRaw = document.getElementById("kode").value.trim();
-      const hasil = document.getElementById("hasil");
+  <hr style="margin: 30px 0; border: 1px solid #ddd;">
 
-      hasil.classList.remove('typewriter');
-      hasil.innerHTML = "";
+  <div>
+    <label for="namaUntuk">Kirim Pesan untuk:</label>
+    <input type="text" id="namaUntuk" placeholder="Ketik nama penerima..." autocomplete="off" />
+    
+    <label for="pesanKirim">Pesan rahasia:</label>
+    <textarea id="pesanKirim" placeholder="Tulis pesan rahasia..." maxlength="300"></textarea>
+    
+    <label for="password">Password (isi 'Harimau'):</label>
+    <input type="password" id="password" placeholder="Password" autocomplete="off" />
+    
+    <button id="btnKirim">Kirim Pesan</button>
+    <div id="statusPengirim" class="message" style="margin-top:10px; min-height:140px;"></div>
+  </div>
 
-      if (!nama || !passRaw) {
-        hasil.textContent = "Mohon isi semua kolom.";
+</div>
+
+<script>
+  const dbPesan = {};
+
+  const inputNamaPenerima = document.getElementById('namaPenerima');
+  const btnCek = document.getElementById('btnCek');
+  const statusPenerima = document.getElementById('statusPenerima');
+
+  const inputNamaUntuk = document.getElementById('namaUntuk');
+  const inputPesanKirim = document.getElementById('pesanKirim');
+  const inputPassword = document.getElementById('password');
+  const btnKirim = document.getElementById('btnKirim');
+  const statusPengirim = document.getElementById('statusPengirim');
+
+  // Fungsi animasi ketik
+  function tampilkanTyping(element, text, cls = '') {
+    element.textContent = '';
+    element.className = 'message ' + cls + ' typing';
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i >= text.length) {
+        clearInterval(interval);
+        element.classList.remove('typing');
         return;
       }
+      element.textContent += text.charAt(i);
+      i++;
+    }, 30);
+  }
 
-      if (passRaw !== "Harimau") {
-        hasil.textContent = "Kode akses salah. Coba lagi.";
-        return;
+  // Cari pesan penerima
+  btnCek.addEventListener('click', () => {
+    const nama = inputNamaPenerima.value.trim().toLowerCase();
+    statusPenerima.className = 'message';
+    if (!nama) {
+      statusPenerima.classList.add('error');
+      statusPenerima.textContent = 'Isi dulu namamu, dong! 😅';
+      return;
+    }
+    statusPenerima.textContent = '';
+    tampilkanTyping(statusPenerima, 'Mencari pesan untuk "' + nama + '"...');
+
+    setTimeout(() => {
+      if (dbPesan[nama]) {
+        const pesanGabungan = dbPesan[nama].map((p, i) => `${i + 1}. ${p}`).join('\n\n');
+        tampilkanTyping(statusPenerima, `Pesan untuk "${nama}":\n\n${pesanGabungan}`, 'success');
+      } else {
+        tampilkanTyping(statusPenerima, `Oops! Belum ada pesan buat "${nama}".\nTunggu Prima kirim ya!`, 'error');
       }
+    }, 1300);
+  });
 
-      const ucapan = `Halo ${nama}!
+  // Kirim pesan dengan kata sandi ya
+  btnKirim.addEventListener('click', () => {
+    statusPengirim.className = 'message';
+    const namaUntuk = inputNamaUntuk.value.trim().toLowerCase();
+    const pesan = inputPesanKirim.value.trim();
+    const password = inputPassword.value.trim();
 
-Semoga hari-harimu dipenuhi kebahagiaan, keberkahan, dan semangat luar biasa!
-Ingat, kamu istimewa dan luar biasa. Jangan ragu untuk terus bersinar ✨`;
-
-      ketikkan(hasil, ucapan);
+    if (!namaUntuk) {
+      statusPengirim.classList.add('error');
+      statusPengirim.textContent = 'Isi nama penerimanya dulu, ya!';
+      return;
+    }
+    if (!pesan) {
+      statusPengirim.classList.add('error');
+      statusPengirim.textContent = 'Pesan gak boleh kosong!';
+      return;
+    }
+    if (!password) {
+      statusPengirim.classList.add('error');
+      statusPengirim.textContent = 'Password harus diisi.';
+      return;
+    }
+    if (password !== 'Harimau') {
+      statusPengirim.classList.add('error');
+      statusPengirim.textContent = 'Password salah, kalau kamu ngga dikasih jangan ngadi-ngadi, coba lagi ya!';
+      return;
     }
 
-    function ketikkan(el, teks, i = 0) {
-      if (i < teks.length) {
-        el.textContent += teks.charAt(i);
-        setTimeout(() => ketikkan(el, teks, i + 1), 25);
-      }
-    }
-  </script>
+    if (!dbPesan[namaUntuk]) dbPesan[namaUntuk] = [];
+    dbPesan[namaUntuk].push(pesan);
+
+    tampilkanTyping(statusPengirim, `Pesan untuk "${namaUntuk}" berhasil dikirim! 🎉`, 'success');
+
+    // Reset input
+    inputNamaUntuk.value = '';
+    inputPesanKirim.value = '';
+    inputPassword.value = '';
+  });
+
+  // Enter untuk cari pesan
+  inputNamaPenerima.addEventListener('keydown', e => {
+    if (e.key === 'Enter') btnCek.click();
+  });
+  // Enter untuk kirim pesan
+  inputPassword.addEventListener('keydown', e => {
+    if (e.key === 'Enter') btnKirim.click();
+  });
+</script>
+
 </body>
 </html>
