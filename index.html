@@ -3,262 +3,168 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pesan Rahasia Interaktif — Nashri Edition</title>
-
-<!-- Google Fonts: Poppins + Roboto Mono -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono&display=swap" rel="stylesheet" />
-
+<title>Pesan Rahasia</title>
 <style>
-  /* Reset dan base */
-  *, *::before, *::after {
+  @import url('https://fonts.googleapis.com/css2?family=Poppins&family=Roboto+Mono&display=swap');
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #f8f8f8;
+    color: #333;
+    display: flex; flex-direction: column; align-items: center;
+    min-height: 100vh;
+  }
+  h1 {
+    margin: 30px 0 10px;
+    font-weight: 600;
+    color: #222;
+  }
+  .container {
+    background: #fff;
+    box-shadow: 0 0 12px rgba(0,0,0,0.08);
+    border-radius: 10px;
+    padding: 25px 30px;
+    max-width: 720px;
+    width: 90%;
     box-sizing: border-box;
   }
-  body {
-    margin: 0; padding: 40px;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #eef2f7;
-    user-select: none;
-  }
-  /* Container utama */
-  .container {
-    display: flex;
-    gap: 48px;
-    background: rgba(255 255 255 / 0.1);
-    border-radius: 24px;
-    box-shadow: 0 20px 50px rgba(102, 126, 234, 0.5);
-    padding: 48px;
-    max-width: 1000px;
-    width: 100%;
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-  }
-
-  /* Box tiap bagian */
-  .box {
-    flex: 1 1 0;
-    background: rgba(255 255 255 / 0.12);
-    border-radius: 20px;
-    padding: 36px 32px 44px 32px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Judul dengan efek neon tipis */
-  h2 {
-    font-weight: 700;
-    font-size: 1.8rem;
-    margin: 0 0 26px 0;
-    text-align: center;
-    color: #f0f4ff;
-    text-shadow:
-       0 0 6px rgba(255, 255, 255, 0.7),
-       0 0 12px rgba(102, 126, 234, 0.9),
-       0 0 24px rgba(118, 75, 162, 0.8);
-  }
-
   label {
+    display: block;
     font-weight: 600;
-    font-size: 1rem;
-    margin-bottom: 8px;
-    color: #dcdce1cc;
-    letter-spacing: 0.03em;
+    margin-bottom: 6px;
+    color: #555;
   }
-
-  input, textarea {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1rem;
-    padding: 14px 18px;
-    margin-bottom: 20px;
-    border-radius: 16px;
-    border: 2px solid rgba(255 255 255 / 0.25);
-    background: rgba(255 255 255 / 0.15);
-    color: #eef2f7;
-    box-shadow: inset 0 0 6px rgba(255 255 255 / 0.3);
-    transition:
-      border-color 0.4s ease,
-      box-shadow 0.4s ease,
-      background-color 0.4s ease;
+  input[type="text"], input[type="password"], textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 18px;
+    border: 1.8px solid #bbb;
+    border-radius: 7px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 15px;
+    color: #222;
+    background: #fafafa;
+    transition: border-color 0.25s ease;
+    box-sizing: border-box;
+  }
+  input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+    outline: none;
+    border-color: #888;
+    background: #fff;
+  }
+  textarea {
     resize: vertical;
-    outline-offset: 2px;
+    min-height: 90px;
   }
-  input::placeholder, textarea::placeholder {
-    color: rgba(255 255 255 / 0.5);
-    font-style: italic;
-  }
-  input:focus, textarea:focus {
-    border-color: #6e57e0;
-    background: rgba(255 255 255 / 0.3);
-    box-shadow:
-      0 0 12px 2px rgba(102, 126, 234, 0.8),
-      inset 0 0 10px 2px rgba(118, 75, 162, 0.7);
-    color: #fff;
-  }
-
-  /* Tombol dengan efek glowing */
   button {
     cursor: pointer;
-    font-weight: 700;
-    font-size: 1.15rem;
-    background: linear-gradient(45deg, #6e57e0, #8b68f4);
+    background-color: #666;
     border: none;
-    padding: 16px 0;
-    border-radius: 16px;
-    color: white;
-    box-shadow:
-      0 0 20px rgba(110, 87, 224, 0.7),
-      0 4px 10px rgba(110, 87, 224, 0.4);
-    transition:
-      background 0.35s ease,
-      box-shadow 0.35s ease,
-      transform 0.2s ease;
-    user-select: none;
+    color: #eee;
+    font-weight: 600;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
   }
-  button:hover:not(:disabled) {
-    background: linear-gradient(45deg, #8b68f4, #a890ff);
-    box-shadow:
-      0 0 28px rgba(139, 104, 244, 0.9),
-      0 6px 18px rgba(139, 104, 244, 0.6);
-    transform: scale(1.05);
+  button:hover {
+    background-color: #444;
   }
-  button:disabled {
-    cursor: not-allowed;
-    background: rgba(150, 150, 150, 0.5);
-    box-shadow: none;
-    color: #ccc;
-    transform: none;
+  .flex-row {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
   }
-
-  /* Status pesan */
+  .flex-row > * {
+    flex: 1 1 200px;
+  }
   .message {
     font-family: 'Roboto Mono', monospace;
-    font-weight: 600;
-    min-height: 72px;
-    margin-top: auto;
-    font-size: 1rem;
+    background: #eee;
+    border-radius: 9px;
+    padding: 15px 18px;
+    min-height: 110px;
     white-space: pre-wrap;
-    color: #a1b0d7;
-    text-align: center;
-    user-select: text;
-    letter-spacing: 0.04em;
-    text-shadow: 0 0 3px rgba(0,0,0,0.2);
-  }
-  .message.error {
-    color: #ff6b6b;
-    text-shadow:
-      0 0 10px #ff6b6b;
+    line-height: 1.42;
+    color: #444;
+    box-sizing: border-box;
+    box-shadow: inset 0 0 4px #ccc;
+    max-width: 100%;
   }
   .message.success {
-    color: #9ee493;
-    text-shadow:
-      0 0 8px #9ee493;
+    background: #e3e3e3;
+    color: #222;
+    border: 1.5px solid #bbb;
   }
-
-  /* Loading spinner neon */
-  .spinner {
-    margin: 20px auto;
-    width: 48px;
-    height: 48px;
-    border: 6px solid rgba(255 255 255 / 0.2);
-    border-top-color: #8b68f4;
-    border-radius: 50%;
-    animation: spin 1.25s linear infinite;
+  .message.error {
+    background: #f9f9f9;
+    color: #b33;
+    border: 1.5px solid #cc6666;
   }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-  /* Animasi ketik */
   .typing {
-    border-right: 3px solid #8b68f4;
-    animation:
-      typingAnim 1.5s steps(30, end) forwards,
-      blinkCaret 0.8s step-end infinite;
-    overflow: hidden;
-    white-space: nowrap;
-    display: inline-block;
+    border-style: dashed;
+    color: #666;
   }
-  @keyframes typingAnim {
-    from { width: 0; }
-    to { width: 100%; }
-  }
-  @keyframes blinkCaret {
-    50% { border-color: transparent; }
-  }
-
-  /* Responsif */
-  @media (max-width: 900px) {
-    body {
-      padding: 28px;
-    }
-    .container {
+  @media (max-width: 600px) {
+    .flex-row {
       flex-direction: column;
-      padding: 28px;
-      gap: 32px;
     }
-    .box {
-      padding: 32px 28px 36px 28px;
+    button {
+      width: 100%;
     }
   }
 </style>
 </head>
-
 <body>
-  <div class="container" role="main" aria-label="Interaktif Penerima dan Pengirim Pesan Rahasia">
-    <!-- Penerima -->
-    <section class="box" aria-labelledby="judul-penerima">
-      <h2 id="judul-penerima">Cek deh, ada pesan untukmu ngga</h2>
-      <label for="namaPenerima">Masukkan namamu</label>
-      <input type="text" id="namaPenerima" placeholder="Tulis namamu di sini..." autocomplete="off" aria-describedby="statusPenerima" />
-      <button id="cekPesanBtn" aria-controls="statusPenerima" aria-live="polite" aria-label="Cek pesan untuk namamu">Cek Pesan</button>
-      <div id="statusPenerima" class="message" role="status" aria-live="polite" aria-atomic="true"></div>
-    </section>
 
-    <!-- Pengirim -->
-    <section class="box" aria-labelledby="judul-pengirim">
-      <h2 id="judul-pengirim">Kirim Pesan Rahasia</h2>
-      <label for="namaUntuk">Untuk siapa?</label>
-      <input type="text" id="namaUntuk" placeholder="Nama penerima pesan" autocomplete="off" aria-describedby="statusPengirim" />
-      
-      <label for="pesanKirim">Isi Pesan</label>
-      <textarea id="pesanKirim" placeholder="Tulis pesanmu di sini..."></textarea>
-      
-      <label for="passwordKirim">Password Rahasia</label>
-      <input type="password" id="passwordKirim" placeholder="Masukkan password rahasia" autocomplete="off" />
-      
-      <button id="kirimPesanBtn" aria-controls="statusPengirim" aria-live="polite" aria-label="Kirim pesan rahasia">Kirim Pesan</button>
-      <div id="statusPengirim" class="message" role="status" aria-live="polite" aria-atomic="true"></div>
-    </section>
+<h1>Pesan Rahasia</h1>
+<div class="container">
+
+  <div>
+    <label for="namaPenerima">Cari Pesan untuk:</label>
+    <input type="text" id="namaPenerima" placeholder="Ketik nama penerima..." autocomplete="off" />
+    <button id="btnCek">Cari</button>
+    <div id="statusPenerima" class="message" style="margin-top:10px; min-height:140px;"></div>
   </div>
 
-<script>
-  // Database pesan simulasi
-  const dbPesan = {
-    'prima': ['Hai Prima! Semangat terus ya!', 'Jangan lupa makan yang teratur 😊'],
-    'nashri': ['Halo Nashri, tetap jaga kesehatan!'],
-  };
+  <hr style="margin: 30px 0; border: 1px solid #ddd;">
 
-  const btnCek = document.getElementById('cekPesanBtn');
+  <div>
+    <label for="namaUntuk">Kirim Pesan untuk:</label>
+    <input type="text" id="namaUntuk" placeholder="Ketik nama penerima..." autocomplete="off" />
+    
+    <label for="pesanKirim">Pesan rahasia:</label>
+    <textarea id="pesanKirim" placeholder="Tulis pesan rahasia..." maxlength="300"></textarea>
+    
+    <label for="password">Password (isi 'Harimau'):</label>
+    <input type="password" id="password" placeholder="Password" autocomplete="off" />
+    
+    <button id="btnKirim">Kirim Pesan</button>
+    <div id="statusPengirim" class="message" style="margin-top:10px; min-height:140px;"></div>
+  </div>
+
+</div>
+
+<script>
+  const dbPesan = {};
+
   const inputNamaPenerima = document.getElementById('namaPenerima');
+  const btnCek = document.getElementById('btnCek');
   const statusPenerima = document.getElementById('statusPenerima');
 
-  const btnKirim = document.getElementById('kirimPesanBtn');
   const inputNamaUntuk = document.getElementById('namaUntuk');
   const inputPesanKirim = document.getElementById('pesanKirim');
-  const inputPassword = document.getElementById('passwordKirim');
+  const inputPassword = document.getElementById('password');
+  const btnKirim = document.getElementById('btnKirim');
   const statusPengirim = document.getElementById('statusPengirim');
 
-  // Fungsi untuk tampilkan pesan dengan animasi ketik
+  // Fungsi animasi ketik
   function tampilkanTyping(element, text, cls = '') {
     element.textContent = '';
     element.className = 'message ' + cls + ' typing';
     let i = 0;
-    let interval = setInterval(() => {
+    const interval = setInterval(() => {
       if (i >= text.length) {
         clearInterval(interval);
         element.classList.remove('typing');
@@ -266,12 +172,12 @@
       }
       element.textContent += text.charAt(i);
       i++;
-    }, 35);
+    }, 30);
   }
 
-  // Cek pesan untuk penerima
+  // Cari pesan penerima
   btnCek.addEventListener('click', () => {
-    let nama = inputNamaPenerima.value.trim().toLowerCase();
+    const nama = inputNamaPenerima.value.trim().toLowerCase();
     statusPenerima.className = 'message';
     if (!nama) {
       statusPenerima.classList.add('error');
@@ -283,20 +189,20 @@
 
     setTimeout(() => {
       if (dbPesan[nama]) {
-        const pesanGabungan = dbPesan[nama].join('\n• ');
-        tampilkanTyping(statusPenerima, `Pesan untuk ${nama}:\n• ${pesanGabungan}`, 'success');
+        const pesanGabungan = dbPesan[nama].map((p, i) => `${i + 1}. ${p}`).join('\n\n');
+        tampilkanTyping(statusPenerima, `Pesan untuk "${nama}":\n\n${pesanGabungan}`, 'success');
       } else {
         tampilkanTyping(statusPenerima, `Oops! Belum ada pesan buat "${nama}".\nAjak temanmu kirim ya!`, 'error');
       }
-    }, 1500);
+    }, 1300);
   });
 
-  // Kirim pesan rahasia dengan password 'Harimau'
+  // Kirim pesan dengan password 'Harimau'
   btnKirim.addEventListener('click', () => {
     statusPengirim.className = 'message';
-    let namaUntuk = inputNamaUntuk.value.trim().toLowerCase();
-    let pesan = inputPesanKirim.value.trim();
-    let password = inputPassword.value.trim();
+    const namaUntuk = inputNamaUntuk.value.trim().toLowerCase();
+    const pesan = inputPesanKirim.value.trim();
+    const password = inputPassword.value.trim();
 
     if (!namaUntuk) {
       statusPengirim.classList.add('error');
@@ -319,7 +225,6 @@
       return;
     }
 
-    // Simpan pesan ke "database"
     if (!dbPesan[namaUntuk]) dbPesan[namaUntuk] = [];
     dbPesan[namaUntuk].push(pesan);
 
@@ -331,13 +236,15 @@
     inputPassword.value = '';
   });
 
-  // Enter key triggers cek pesan dan kirim pesan
+  // Enter untuk cari pesan
   inputNamaPenerima.addEventListener('keydown', e => {
     if (e.key === 'Enter') btnCek.click();
   });
+  // Enter untuk kirim pesan
   inputPassword.addEventListener('keydown', e => {
     if (e.key === 'Enter') btnKirim.click();
   });
 </script>
+
 </body>
 </html>
